@@ -35,18 +35,48 @@ class AboutHeaderWallpaperTest {
 
         val source = loadHeaderWallpaperSource(context, manager)
 
-        assertThat(source.live).isFalse()
+        assertThat(source.captureLiveFrame).isFalse()
         assertThat(source.drawable).isSameInstanceAs(image)
+        verify(manager, never()).getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
+    }
+
+    @Test
+    fun emojiWallpaper_missingProviderKeepsColorsWithoutCapturingOrLoadingThumbnail() {
+        val info = mock(WallpaperInfo::class.java)
+        `when`(info.packageName).thenReturn("com.google.android.apps.emojiwallpaper")
+        `when`(manager.getWallpaperInfo(WallpaperManager.FLAG_SYSTEM)).thenReturn(info)
+
+        val source = loadHeaderWallpaperSource(context, manager)
+
+        assertThat(source.captureLiveFrame).isFalse()
+        assertThat(source.drawable).isInstanceOf(ColorDrawable::class.java)
+        verify(info, never()).loadThumbnail(context.packageManager)
+        verify(manager, never()).getDrawable(WallpaperManager.FLAG_SYSTEM)
+    }
+
+    @Test
+    fun unknownWallpaper_usesSystemImageWithoutCapturing() {
+        val image = ColorDrawable(Color.BLUE)
+        `when`(manager.getWallpaperInfo(WallpaperManager.FLAG_SYSTEM))
+            .thenThrow(IllegalStateException("Wallpaper service unavailable"))
+        `when`(manager.getDrawable(WallpaperManager.FLAG_SYSTEM)).thenReturn(image)
+
+        val source = loadHeaderWallpaperSource(context, manager)
+
+        assertThat(source.captureLiveFrame).isFalse()
+        assertThat(source.drawable).isSameInstanceAs(image)
+        verify(manager, never()).getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
     }
 
     @Test
     fun liveWallpaper_neverLoadsServiceThumbnailOrUnrelatedStaticImage() {
         val info = mock(WallpaperInfo::class.java)
+        `when`(info.packageName).thenReturn("com.example.livewallpaper")
         `when`(manager.getWallpaperInfo(WallpaperManager.FLAG_SYSTEM)).thenReturn(info)
 
         val source = loadHeaderWallpaperSource(context, manager)
 
-        assertThat(source.live).isTrue()
+        assertThat(source.captureLiveFrame).isTrue()
         assertThat(source.drawable).isInstanceOf(ColorDrawable::class.java)
         verify(info, never()).loadThumbnail(context.packageManager)
         verify(manager, never()).getDrawable(WallpaperManager.FLAG_SYSTEM)

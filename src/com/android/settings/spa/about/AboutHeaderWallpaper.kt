@@ -36,18 +36,37 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-internal data class HeaderWallpaperSource(val live: Boolean, val drawable: Drawable?)
+internal data class HeaderWallpaperSource(val captureLiveFrame: Boolean, val drawable: Drawable?)
 
 /** A live wallpaper's service thumbnail is an icon/preview, not its current composition. */
 internal fun loadHeaderWallpaperSource(
     context: Context,
     manager: WallpaperManager,
-): HeaderWallpaperSource = if (manager.getWallpaperInfo(WallpaperManager.FLAG_SYSTEM) != null) {
-    val color = manager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM)?.primaryColor?.toArgb()
-        ?: Color.TRANSPARENT
-    HeaderWallpaperSource(live = true, drawable = ColorDrawable(color))
-} else {
-    HeaderWallpaperSource(live = false, drawable = manager.getDrawable(WallpaperManager.FLAG_SYSTEM))
+): HeaderWallpaperSource {
+    val info =
+        try {
+            manager.getWallpaperInfo(WallpaperManager.FLAG_SYSTEM)
+        } catch (exception: RuntimeException) {
+            Log.w(TAG, "Unable to identify the header wallpaper", exception)
+            null
+        }
+    // Capture only a confirmed live engine, excluding Emoji wallpapers.
+    if (info == null) {
+        return HeaderWallpaperSource(
+            captureLiveFrame = false,
+            drawable = manager.getDrawable(WallpaperManager.FLAG_SYSTEM),
+        )
+    }
+    val color =
+        manager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM)?.primaryColor?.toArgb()
+            ?: Color.TRANSPARENT
+    if (info.packageName == EMOJI_WALLPAPER_PACKAGE) {
+        return HeaderWallpaperSource(
+            captureLiveFrame = false,
+            drawable = loadEmojiHeaderWallpaper(context) ?: ColorDrawable(color),
+        )
+    }
+    return HeaderWallpaperSource(captureLiveFrame = true, drawable = ColorDrawable(color))
 }
 
 /** Reveal only the wallpaper layer while acquiring a frame; restore caller-owned window flags. */
@@ -97,7 +116,7 @@ internal fun rememberAboutHeaderWallpaper(context: Context): Drawable? {
                 return@repeatOnLifecycle
             }
             wallpaper = source.drawable
-            if (!source.live) return@repeatOnLifecycle
+            if (!source.captureLiveFrame) return@repeatOnLifecycle
             val window = context.headerActivity()?.window ?: return@repeatOnLifecycle
             val previewWindow = HeaderWallpaperWindow(window)
             try {
@@ -135,3 +154,4 @@ private tailrec fun Context.headerActivity(): Activity? = when (this) {
 }
 
 private const val TAG = "AboutHeaderWallpaper"
+private const val EMOJI_WALLPAPER_PACKAGE = "com.google.android.apps.emojiwallpaper"
