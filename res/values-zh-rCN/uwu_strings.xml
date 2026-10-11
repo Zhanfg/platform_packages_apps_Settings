@@ -32,7 +32,7 @@
     <string name="about_phone_battery_capacity_value">%1$d mAh</string>
     <string name="about_phone_unavailable">无法打开此详情页面。</string>
     <string name="display_capabilities_title">屏幕实际能力</string>
-    <string name="display_capabilities_summary">已报告 HDR：%1$s · 刷新模式：%2$s · HDR 亮度设置：%3$s</string>
+    <string name="display_capabilities_summary">已报告 HDR：%1$s · 刷新模式：%2$s · HDR 亮度调节（非 HDR 总开关）：%3$s</string>
     <string name="display_capabilities_brightness_no_hdr">未报告 HDR 能力</string>
     <string name="display_capabilities_brightness_no_ratio">显示框架未提供 HDR/SDR 亮度比例</string>
     <string name="display_capabilities_brightness_available">设置入口可用，真实 HDR 输出待验证</string>
