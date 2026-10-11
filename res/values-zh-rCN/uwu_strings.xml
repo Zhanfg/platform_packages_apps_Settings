@@ -31,6 +31,8 @@
     <string name="about_phone_battery_capacity_label">电池容量</string>
     <string name="about_phone_battery_capacity_value">%1$d mAh</string>
     <string name="about_phone_unavailable">无法打开此详情页面。</string>
+    <string name="op6_hdr_content_title">允许原生 HDR 内容</string>
+    <string name="op6_hdr_content_summary">显示链路就绪后允许 HDR10、HLG 和 HDR10+ 内容输出；不会将 SDR 强制转换为 HDR。</string>
     <string name="display_capabilities_title">屏幕实际能力</string>
     <string name="display_capabilities_summary">已报告 HDR：%1$s · 刷新模式：%2$s · HDR 亮度调节（非 HDR 总开关）：%3$s</string>
     <string name="display_capabilities_brightness_no_hdr">未报告 HDR 能力</string>
