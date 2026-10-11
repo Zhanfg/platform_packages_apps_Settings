@@ -11,6 +11,8 @@ on:
       - "res/values/custom_strings.xml"
       - "res/values-zh-rCN/uwu_strings.xml"
       - "tools/qa/test_real_display_capabilities.py"
+      - "tools/qa/test_op6_hdr_switch.py"
+      - "src/com/android/settings/display/Op6HdrContentPreferenceController.java"
       - ".github/workflows/display-capabilities-source-qa.yml"
   pull_request:
     paths:
@@ -19,6 +21,8 @@ on:
       - "res/values/custom_strings.xml"
       - "res/values-zh-rCN/uwu_strings.xml"
       - "tools/qa/test_real_display_capabilities.py"
+      - "tools/qa/test_op6_hdr_switch.py"
+      - "src/com/android/settings/display/Op6HdrContentPreferenceController.java"
       - ".github/workflows/display-capabilities-source-qa.yml"
 
 permissions:
@@ -38,6 +42,9 @@ jobs:
             res/values/custom_strings.xml
             res/values-zh-rCN/uwu_strings.xml
             tools/qa/test_real_display_capabilities.py
+            tools/qa/test_op6_hdr_switch.py
           sparse-checkout-cone-mode: false
       - name: Validate real display mode gating
-        run: python3 -m unittest discover -s tools/qa -p "test_real_display_capabilities.py" -v
+        run: |
+          python3 -m unittest discover -s tools/qa -p "test_real_display_capabilities.py" -v
+          python3 -m unittest discover -s tools/qa -p "test_op6_hdr_switch.py" -v
