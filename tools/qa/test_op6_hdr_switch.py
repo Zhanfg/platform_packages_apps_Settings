@@ -17,10 +17,9 @@ class HdrControlTest(unittest.TestCase):
         s = CTRL.read_text()
         for expected in (
                 "getSupportedColorModes()", "getSupportedHdrTypes()",
-                "setUserDisabledHdrTypes(", "getUserDisabledHdrTypes()",
-                "setAreUserDisabledHdrTypesAllowed(", "areUserDisabledHdrTypesAllowed()",
-                "OnePlus6", "enchilada", "HDR_TYPE_HDR10",
-                "HDR_TYPE_HLG", "HDR_TYPE_HDR10_PLUS"):
+                "getUserPreferredHdrMode(", "setUserPreferredHdrMode(",
+                "HDR_PREFERENCE_SDR_ONLY", "HDR_PREFERENCE_HDR_ALLOWED",
+                "OnePlus6", "enchilada"):
             self.assertIn(expected, s, expected)
         for banned in ("setprop ", "wm density", "HDR_CONVERSION_FORCE",
                        "setHdrConversionMode(", "ro.surface_flinger.has_HDR_display"):
