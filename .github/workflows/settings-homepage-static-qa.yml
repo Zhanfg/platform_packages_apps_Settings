@@ -1,0 +1,38 @@
+name: Settings Expressive Homepage Static QA
+
+on:
+  push:
+    branches: ["fix/**"]
+    paths:
+      - "res/layout/settings_homepage.xml"
+      - "res/layout/settings_homepage_container.xml"
+      - "res/values/dimens.xml"
+      - "tools/qa/test_settings_homepage_expressive.py"
+      - ".github/workflows/settings-homepage-static-qa.yml"
+  pull_request:
+    paths:
+      - "res/layout/settings_homepage.xml"
+      - "res/layout/settings_homepage_container.xml"
+      - "res/values/dimens.xml"
+      - "tools/qa/test_settings_homepage_expressive.py"
+      - ".github/workflows/settings-homepage-static-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  xml-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            res/layout/settings_homepage.xml
+            res/layout/settings_homepage_container.xml
+            res/values/dimens.xml
+            tools/qa/test_settings_homepage_expressive.py
+          sparse-checkout-cone-mode: false
+      - name: Validate XML and UI motion invariants
+        run: python3 -m unittest discover -s tools/qa -p "test_settings_homepage_expressive.py" -v
