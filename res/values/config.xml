@@ -70,7 +70,10 @@
     <string name="gesture_double_twist_sensor_vendor" translatable="false"></string>
 
     <!-- If the Storage Manager settings are enabled. -->
-    <bool name="config_storage_manager_settings_enabled">false</bool>
+    <!-- Stock AOSP Settings already provides a Storage Manager activity and
+         smart-storage controller. Restore its standard documented Settings
+         intent; no extra background service is enabled by this flag. -->
+    <bool name="config_storage_manager_settings_enabled">true</bool>
 
     <!-- If the support features are enabled. -->
     <bool name="config_support_enabled">false</bool>
@@ -418,7 +421,10 @@
     <bool name="config_show_private_dns_settings">true</bool>
 
     <!-- Whether memory from app_info_settings is available or not. -->
-    <bool name="config_show_app_info_settings_memory">false</bool>
+    <!-- Show memory detail only when the existing controller confirms that
+         Developer options are enabled. Without process statistics it will
+         display 'no memory usage' rather than invent a value. -->
+    <bool name="config_show_app_info_settings_memory">true</bool>
 
     <!-- Whether battery from app_info_settings is available or not. -->
     <bool name="config_show_app_info_settings_battery">true</bool>
