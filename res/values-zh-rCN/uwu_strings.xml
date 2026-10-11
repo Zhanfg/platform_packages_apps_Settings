@@ -40,4 +40,5 @@
     <string name="display_capabilities_brightness_available">设置入口可用，真实 HDR 输出待验证</string>
     <string name="display_capabilities_hdr_unreported">显示 HAL 未报告</string>
     <string name="display_capabilities_unavailable">无法读取屏幕信息</string>
+    <string name="op6_hdr_content_summary_off">仅使用 SDR，禁止此屏幕的 HDR 视频输出。</string>
 </resources>
