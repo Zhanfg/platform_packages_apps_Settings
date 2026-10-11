@@ -33,6 +33,9 @@ class RealDisplayModesTest(unittest.TestCase):
         self.assertIn("manager.getDisplay(Display.DEFAULT_DISPLAY)", s)
         self.assertIn("HDR_TYPE_HDR10", s)
         self.assertIn("HDR_TYPE_HLG", s)
+        self.assertIn("display.isHdr()", s)
+        self.assertIn("display.isHdrSdrRatioAvailable()", s)
+        self.assertIn("display_capabilities_brightness_no_ratio", s)
         self.assertNotIn("Settings.System.put", s)
         self.assertNotIn("setRefreshRate(", s)
 
@@ -53,7 +56,10 @@ class RealDisplayModesTest(unittest.TestCase):
             for name in ("display_capabilities_title",
                          "display_capabilities_summary",
                          "display_capabilities_hdr_unreported",
-                         "display_capabilities_unavailable"):
+                         "display_capabilities_unavailable",
+                         "display_capabilities_brightness_no_hdr",
+                         "display_capabilities_brightness_no_ratio",
+                         "display_capabilities_brightness_available"):
                 self.assertIn(name, keys)
 
 if __name__ == "__main__":
