@@ -411,6 +411,8 @@
     <string name="app_volume_title">Per-app volume control</string>
     <string name="app_volume_summary">Show per-app volume controls in the volume dialog</string>
     <!-- Actual display HAL capabilities, not marketing/device-tree guesses. -->
+    <string name="op6_hdr_content_title">Allow native HDR content</string>
+    <string name="op6_hdr_content_summary">Allow supported HDR10, HLG and HDR10+ formats when the display pipeline is ready. Does not convert SDR to HDR.</string>
     <string name="display_capabilities_title">Display capabilities</string>
     <string name="display_capabilities_summary">HDR reported: %1$s · Refresh modes: %2$s · HDR brightness adjustment (not HDR on/off): %3$s</string>
     <string name="display_capabilities_brightness_no_hdr">No HDR capability reported</string>
