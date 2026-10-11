@@ -83,7 +83,8 @@ public class RefreshRateSettings extends RadioButtonPickerFragment {
     @Override
     protected List<? extends CandidateInfo> getCandidates() {
         return mUtils.getRefreshRates().stream()
-                .filter(r -> r >= RefreshRateUtils.DEFAULT_REFRESH_RATE)
+                // Only modes reported by the active panel are selectable.
+                // Include genuine sub-60Hz modes when the HAL exposes them.
                 .map(RefreshRateCandidateInfo::new)
                 .collect(Collectors.toList());
     }
