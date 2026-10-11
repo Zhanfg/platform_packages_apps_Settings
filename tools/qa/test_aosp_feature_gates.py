@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 class MissingAospEntryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config={x.get("name"):x.text.strip() for x in ET.parse(ROOT/"res/values/config.xml").getroot() if x.get("name")}
+        cls.config={x.get("name"):x.text.strip() for x in ET.parse(ROOT/"res/values/config.xml").getroot() if x.get("name") and x.text is not None}
     def test_aosp_storage_manager_intent_restored(self):
         self.assertEqual(self.config["config_storage_manager_settings_enabled"],"true")
         manifest=(ROOT/"AndroidManifest.xml").read_text(encoding="utf-8")
