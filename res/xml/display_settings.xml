@@ -138,6 +138,13 @@
         </Preference>
 
         <Preference
+            android:key="display_capabilities"
+            android:title="@string/display_capabilities_title"
+            android:summary="@string/summary_placeholder"
+            settings:controller="com.android.settings.display.DisplayCapabilitiesPreferenceController"
+            settings:searchable="false"/>
+
+        <Preference
             android:key="color_mode"
             android:title="@string/color_mode_title"
             android:fragment="com.android.settings.display.ColorModePreferenceFragment"
