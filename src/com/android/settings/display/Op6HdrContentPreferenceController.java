@@ -50,7 +50,18 @@ public final class Op6HdrContentPreferenceController extends TogglePreferenceCon
         }
 
         final Display.HdrCapabilities caps = display.getHdrCapabilities();
-        return caps != null && caps.getSupportedHdrTypes().length > 0;
+        if (caps != null && caps.getSupportedHdrTypes().length > 0) {
+            return true;
+        }
+        // SDR_ONLY can filter available HDR types out of the framework
+        // capability list. Keep the switch accessible so it can be turned
+        // back on, provided the actual HWC still has multiple color modes.
+        try {
+            return manager.getUserPreferredHdrMode(Display.DEFAULT_DISPLAY)
+                    == DisplayManager.HDR_PREFERENCE_SDR_ONLY;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     @Override
