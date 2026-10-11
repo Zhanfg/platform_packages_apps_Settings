@@ -32,7 +32,6 @@
             android:id="@+id/homepage_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
             android:orientation="vertical">
 
             <FrameLayout
@@ -53,7 +52,7 @@
                 android:id="@+id/main_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"/>
+/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

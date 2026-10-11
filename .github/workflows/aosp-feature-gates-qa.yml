@@ -1,0 +1,31 @@
+name: AOSP Settings Feature Gate QA
+on:
+  push:
+    branches: ["fix/**"]
+    paths:
+      - "res/values/config.xml"
+      - "tools/qa/test_aosp_feature_gates.py"
+      - ".github/workflows/aosp-feature-gates-qa.yml"
+  pull_request:
+    paths:
+      - "res/values/config.xml"
+      - "tools/qa/test_aosp_feature_gates.py"
+      - ".github/workflows/aosp-feature-gates-qa.yml"
+permissions:
+  contents: read
+jobs:
+  source-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            res/values/config.xml
+            AndroidManifest.xml
+            src/com/android/settings/deletionhelper/AutomaticStorageManagerSettings.java
+            src/com/android/settings/applications/appinfo/AppMemoryPreferenceController.java
+            tools/qa/test_aosp_feature_gates.py
+          sparse-checkout-cone-mode: false
+      - run: python3 -m unittest discover -s tools/qa -p test_aosp_feature_gates.py -v
