@@ -410,4 +410,9 @@
     <string name="app_volume">App volume</string>
     <string name="app_volume_title">Per-app volume control</string>
     <string name="app_volume_summary">Show per-app volume controls in the volume dialog</string>
+    <!-- Actual display HAL capabilities, not marketing/device-tree guesses. -->
+    <string name="display_capabilities_title">Display capabilities</string>
+    <string name="display_capabilities_summary">HDR reported: %1$s · Refresh modes: %2$s</string>
+    <string name="display_capabilities_hdr_unreported">Not reported by display HAL</string>
+    <string name="display_capabilities_unavailable">Display information unavailable</string>
 </resources>
