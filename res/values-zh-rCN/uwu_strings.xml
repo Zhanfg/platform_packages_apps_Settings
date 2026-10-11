@@ -31,4 +31,8 @@
     <string name="about_phone_battery_capacity_label">电池容量</string>
     <string name="about_phone_battery_capacity_value">%1$d mAh</string>
     <string name="about_phone_unavailable">无法打开此详情页面。</string>
+    <string name="display_capabilities_title">屏幕实际能力</string>
+    <string name="display_capabilities_summary">HDR：%1$s · 刷新模式：%2$s</string>
+    <string name="display_capabilities_hdr_unreported">显示 HAL 未报告</string>
+    <string name="display_capabilities_unavailable">无法读取屏幕信息</string>
 </resources>
