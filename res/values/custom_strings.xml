@@ -412,7 +412,7 @@
     <string name="app_volume_summary">Show per-app volume controls in the volume dialog</string>
     <!-- Actual display HAL capabilities, not marketing/device-tree guesses. -->
     <string name="display_capabilities_title">Display capabilities</string>
-    <string name="display_capabilities_summary">HDR reported: %1$s · Refresh modes: %2$s · HDR brightness settings: %3$s</string>
+    <string name="display_capabilities_summary">HDR reported: %1$s · Refresh modes: %2$s · HDR brightness adjustment (not HDR on/off): %3$s</string>
     <string name="display_capabilities_brightness_no_hdr">No HDR capability reported</string>
     <string name="display_capabilities_brightness_no_ratio">HDR/SDR brightness ratio not available in display framework</string>
     <string name="display_capabilities_brightness_available">Settings supported; actual HDR output not verified</string>
