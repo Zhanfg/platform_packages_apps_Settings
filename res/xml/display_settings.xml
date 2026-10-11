@@ -137,6 +137,15 @@
             <intent android:action="com.android.settings.LIVEDISPLAY_SETTINGS" />
         </Preference>
 
+        <!-- Native HDR content policy. Visible only after real HWC color modes recover. -->
+        <com.android.settingslib.PrimarySwitchPreference
+            android:key="op6_hdr_content"
+            android:title="@string/op6_hdr_content_title"
+            android:summary="@string/op6_hdr_content_summary"
+            android:persistent="false"
+            settings:controller="com.android.settings.display.Op6HdrContentPreferenceController"
+            settings:searchable="false"/>
+
         <Preference
             android:key="display_capabilities"
             android:title="@string/display_capabilities_title"
