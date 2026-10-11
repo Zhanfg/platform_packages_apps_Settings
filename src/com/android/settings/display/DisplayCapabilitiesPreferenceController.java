@@ -16,7 +16,6 @@ import com.android.settings.core.BasePreferenceController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -85,7 +84,21 @@ public class DisplayCapabilitiesPreferenceController extends BasePreferenceContr
                 String.join(", ", hdr);
         final String ratesDescription = frequencies.isEmpty() ? "-" :
                 String.join(", ", frequencies);
+        // HDR format advertisement alone cannot enable the AOSP HDR
+        // brightness controls: they also require HDR/SDR ratio reporting.
+        // Do not imply that real HDR video output has been validated.
+        final String brightnessStatus;
+        if (!display.isHdr()) {
+            brightnessStatus = mContext.getString(
+                    R.string.display_capabilities_brightness_no_hdr);
+        } else if (!display.isHdrSdrRatioAvailable()) {
+            brightnessStatus = mContext.getString(
+                    R.string.display_capabilities_brightness_no_ratio);
+        } else {
+            brightnessStatus = mContext.getString(
+                    R.string.display_capabilities_brightness_available);
+        }
         return mContext.getString(R.string.display_capabilities_summary,
-                hdrDescription, ratesDescription);
+                hdrDescription, ratesDescription, brightnessStatus);
     }
 }
