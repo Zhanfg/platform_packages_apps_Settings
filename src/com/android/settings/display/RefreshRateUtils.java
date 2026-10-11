@@ -17,6 +17,7 @@
 package com.android.settings.display;
 
 import android.content.Context;
+import android.view.Display;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -44,15 +45,30 @@ public class RefreshRateUtils {
     }
 
     List<Integer> getRefreshRates() {
-        return Arrays.stream(mContext.getDisplay().getSupportedModes())
-                .map(m -> Math.round(m.getRefreshRate()))
+        final Display display = mContext.getDisplay();
+        if (display == null) {
+            return Collections.singletonList(DEFAULT_REFRESH_RATE);
+        }
+        final Display.Mode activeMode = display.getMode();
+        if (activeMode == null) {
+            return Collections.singletonList(DEFAULT_REFRESH_RATE);
+        }
+        // Only consider modes with the same physical resolution. Other mode
+        // IDs may change output geometry rather than the panel refresh rate.
+        final List<Integer> rates = Arrays.stream(display.getSupportedModes())
+                .filter(mode -> mode.getPhysicalWidth() == activeMode.getPhysicalWidth()
+                        && mode.getPhysicalHeight() == activeMode.getPhysicalHeight())
+                .map(mode -> Math.round(mode.getRefreshRate()))
+                .filter(rate -> rate > 0)
                 .sorted().distinct().collect(Collectors.toList());
+        return rates.isEmpty() ? Collections.singletonList(
+                Math.round(activeMode.getRefreshRate())) : rates;
     }
 
     boolean isHighRefreshRateAvailable() {
-        return mRefreshRates.stream()
-                .filter(r -> r > DEFAULT_REFRESH_RATE)
-                .count() > 0;
+        // Advanced rate settings should reflect genuine distinct physical
+        // modes, including a 48/60Hz panel. A single 60Hz mode is not VRR.
+        return mRefreshRates.size() > 1;
     }
 
     private int roundToNearestRefreshRate(int refreshRate, boolean floor) {
@@ -102,19 +118,28 @@ public class RefreshRateUtils {
     }
 
     void setCurrentRefreshRate(int refreshRate) {
+        if (!mRefreshRates.contains(refreshRate)) {
+            Log.w(TAG, "Ignoring unsupported panel refresh rate: " + refreshRate);
+            return;
+        }
         setPeakRefreshRate(refreshRate);
         setMinRefreshRate(isVrrEnabled() ? DEFAULT_MIN_REFRESH_RATE : refreshRate);
     }
 
     boolean isVrrPossible() {
-        return getCurrentRefreshRate() > DEFAULT_REFRESH_RATE;
+        // This is multi-mode switching, NOT true panel ARR/VRR capability.
+        // Do not offer a variable-rate toggle on single-mode 60Hz panels.
+        return mRefreshRates.size() > 1;
     }
 
     boolean isVrrEnabled() {
-        return getMinRefreshRate() <= DEFAULT_MIN_REFRESH_RATE;
+        return isVrrPossible() && getMinRefreshRate() <= DEFAULT_MIN_REFRESH_RATE;
     }
 
     void setVrrEnabled(boolean enable) {
+        if (!isVrrPossible()) {
+            return;
+        }
         setMinRefreshRate(enable ? DEFAULT_MIN_REFRESH_RATE : getCurrentRefreshRate());
     }
 }
